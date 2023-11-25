@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TextInput, Button, ScrollView, FlatList } from "react-native";
+import Products from './components/Products';
+import AddProduct from './components/AddProducts';
 
 export default function App() {
 
-  const [product, setProduct] = useState('');
   const [myProducts, setMyProducts] = useState([]);
 
-  const inputHandler = (val) => {
-    setProduct(val)
-  }
-
-  const submitHandler = () => {
+  const submitHandler = (product) => {
     const idString = Date.now().toString();
 setMyProducts( currentMyProducts => [{key: idString, name: product}, ...currentMyProducts]);
 setProduct('');
@@ -20,21 +17,13 @@ setProduct('');
   
   return (
     <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <TextInput style={styles.textInput} 
-        placeholder="nouveau produit"
-        onChangeText={inputHandler}
-        value={product}
-        />
-        <Button 
-        title="valider"
-        onPress={submitHandler}
-        />
-      </View>
+<AddProduct submitHandler={submitHandler}
+/>       
+      
 
       <FlatList
       data={myProducts}
-      renderItem={( {item}) => <Text style={styles.element}>{item.name}</Text> }
+      renderItem={( {item}) => <Products name={item.name}/> }
       />
 
     
@@ -47,25 +36,6 @@ const styles = StyleSheet.create({
     padding: 40,
     paddingTop: 60,
   },
-  inputContainer: {
-    flexDirection: "row",
-    marginBottom: 15
-  },
-  textInput: {
-    borderColor: "grey",
-    borderWidth: 1,
-    padding: 5,
-    paddingLeft: 9,
-    fontSize: 18,
-    flexGrow:1
-  },
-  items: {
-marginTop: 10
-  },
-  element: {
-    backgroundColor: "#ffb6c1",
-fontSize: 17,
-padding: 20,
-marginVertical: 6
-  }
+  
+  
 });
